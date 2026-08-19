@@ -40,3 +40,5 @@ Thumbs.db
 # Notebooks checkpoints
 *-checkpoint.ipynb
 .ipynb_checkpoints/
+
+.gitignore
