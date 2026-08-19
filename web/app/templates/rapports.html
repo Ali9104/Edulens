@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+ 
+{% block title %}Rapports{% endblock %}
+{% block page_title %}Rapports PDF{% endblock %}
+{% block page_subtitle %}Liste des rapports générés{% endblock %}
+ 
+{% block content %}
+ 
+{% if fichiers %}
+<div class="card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fichier</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fichier in fichiers %}
+            <tr>
+                <td>{{ fichier }}</td>
+                <td>
+                    <a href="{{ url_for('students.download_rapport', filename=fichier) }}" class="action-link">Télécharger</a>
+                    <a href="{{ url_for('students.view_rapport', filename=fichier) }}" class="action-link">Voir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="empty-msg">Aucun rapport généré pour le moment.</p>
+{% endif %}
+ 
+{% endblock %}

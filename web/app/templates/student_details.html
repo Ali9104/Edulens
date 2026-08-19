@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Détails — {{ student.nom }}{% endblock %}
+{% block page_title %}{{ student.prenom }} {{ student.nom }}{% endblock %}
+{% block page_subtitle %}Groupe : {{ student.groupe }}{% endblock %}
+
+{% block content %}
+
+<div class="card" style="max-width: 600px;">
+    <div class="detail-row">
+        <span class="detail-label">Nom</span>
+        <span class="detail-value">{{ student.nom }}</span>
+    </div>
+    <div class="detail-row">
+        <span class="detail-label">Prénom</span>
+        <span class="detail-value">{{ student.prenom }}</span>
+    </div>
+    <div class="detail-row">
+        <span class="detail-label">Groupe</span>
+        <span class="detail-value"><span class="badge">{{ student.groupe }}</span></span>
+    </div>
+</div>
+
+<div style="display: flex; gap: 10px; margin-top: 1.5rem;">
+    <a href="{{ url_for('students.edit_student', student_id=student.id) }}" class="btn-primary">Modifier</a>
+    <a href="{{ url_for('absences.add_absence', student_id=student.id) }}" class="btn-secondary">Ajouter une absence</a>
+    <a href="{{ url_for('grades.add_grade', student_id=student.id) }}" class="btn-primary">Ajouter une note</a>
+    <a href="{{ url_for('students.download_student_pdf', student_id=student.id) }}" class="btn-primary">Exporter PDF</a>
+    <a href="{{ url_for('students.list_rapport_by_students', student_id=student.id) }}" class="btn-primary">Voir PDF</a>
+    <a href="{{ url_for('students.list_students') }}" class="btn-secondary">Retour</a>
+</div>
+
+{% endblock %}

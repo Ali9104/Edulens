@@ -1,0 +1,42 @@
+# PDF générés par l'app
+*.pdf
+exports/
+generated_reports/
+output/
+# Environnements virtuels
+venv/
+env/
+.venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Fichiers sensibles
+.env
+*.env
+config_secret.py
+*.key
+
+# Base de données locale
+*.sqlite3
+*.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Notebooks checkpoints
+*-checkpoint.ipynb
+.ipynb_checkpoints/

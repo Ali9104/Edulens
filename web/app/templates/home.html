@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block page_title %}Bonjour, Prof. {{ current_user.nom }}{% endblock %}
+{% block page_subtitle %}Dashboard principal{% endblock %}
+
+{% block content %}
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-label">Total étudiants</div>
+        <div class="stat-value">{{ total_students }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Moyenne générale</div>
+        <div class="stat-value">{{average}}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Taux d'absence </div>
+        <div class="stat-value">{{ taux_absence }}%</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">À risque d'échec</div>
+        <div class="stat-value">{{occurance_difficulte}}</div>
+    </div>
+</div>
+
+
+<div id="chart" style="margin-top: 1.5rem;"></div>
+<script>
+    var noms = {{ noms | tojson }};
+    var moyennes = {{ moyenne | tojson }};
+
+    var data = [{
+        type: 'bar',
+        x: noms,
+        y: moyennes,
+        marker: { color: '#185FA5' }
+    }];
+
+    var layout = {
+        title: 'Moyenne par étudiant',
+        yaxis: { range: [0, 20], title: 'Moyenne' },
+        xaxis: { title: 'Étudiants' },
+        plot_bgcolor: '#ffffff',
+        paper_bgcolor: '#ffffff'
+    };
+
+    Plotly.newPlot('chart', data, layout);
+</script>
+<div class="card" style="margin-top: 1.5rem;">
+    <div class="card-title" style="font-size: 14px; font-weight: 500; margin-bottom: 1rem;">Profils des étudiants — IA</div>
+    {% for student in students %}
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 0.5px solid #f0f0f0;">
+        <span style="font-size: 14px;">{{ student.prenom }} {{ student.nom }}</span>
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <span class="badge" style="
+            {% if cluster[student.id] == 'Excellent' %}background:#EAF3DE; color:#3B6D11;
+            {% elif cluster[student.id] == 'Moyen' %}background:#FAEEDA; color:#854F0B;
+            {% elif cluster[student.id] == 'En difficulté' %}background:#FCEBEB; color:#A32D2D;
+            {% else %}background:#f0f0f0; color:#666;{% endif %}
+            ">{{ cluster[student.id] }}</span>
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Notes{% endblock %}
+{% block page_title %}Notes{% endblock %}
+{% block page_subtitle %}Liste de toutes les notes{% endblock %}
+
+{% block content %}
+
+{% if grades %}
+<div class="card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Etudiant</th>
+                <th>Matière</th>
+                <th>Note</th>
+                <th>Semestre</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for g in grades %}
+            <tr>
+                <td>{{ g.student.nom }} {{ g.student.prenom }}</td>
+                <td>{{ g.matiere }}</td>
+                <td><span class="badge">{{ g.note }}/20</span></td>
+                <td>{{ g.semestre }}</td>
+                <td>{{ g.date }}</td>
+                <td>
+                    <a href="{{ url_for('grades.edit_grade', grade_id=g.id) }}" class="action-link">Modifier</a>
+                    <form action="{{ url_for('grades.delete_grade', grade_id=g.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="action-delete" onclick="return confirm('Supprimer cette note ?')">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="empty-msg">Aucune note pour le moment.</p>
+{% endif %}
+
+{% endblock %}

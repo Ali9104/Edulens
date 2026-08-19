@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+ 
+{% block title %}Analytique{% endblock %}
+{% block page_title %}Analytique{% endblock %}
+{% block page_subtitle %}Visualisation avancée des données{% endblock %}
+ 
+{% block content %}
+ 
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+ 
+
+<div class="card" style="margin-bottom: 1.5rem;">
+    <div style="font-size: 14px; font-weight: 500; margin-bottom: 0.5rem;">Moyenne par étudiant</div>
+    <div id="chart_moyennes"></div>
+</div>
+ 
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+    <div class="card">
+        <div style="font-size: 14px; font-weight: 500; margin-bottom: 0.5rem;">Répartition des profils IA</div>
+        <div id="chart_clusters"></div>
+    </div>
+    <div class="card">
+        <div style="font-size: 14px; font-weight: 500; margin-bottom: 0.5rem;">Absences par étudiant</div>
+        <div id="chart_absences"></div>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom: 1.5rem;">
+    <div style="font-size: 14px; font-weight: 500; margin-bottom: 0.5rem;">Distribution des notes par semestre</div>
+    <div id="chart_semestres"></div>
+</div>
+ 
+<script>
+    var noms = {{ noms | tojson }};
+    var moyennes = {{ moyenne | tojson }};
+    var absences_par_etudiant = {{ absences_par_etudiant | tojson }};
+ 
+    Plotly.newPlot('chart_moyennes', [{
+        type: 'bar',
+        x: noms,
+        y: moyennes,
+        marker: { color: '#185FA5' }
+    }], {
+        yaxis: { range: [0, 20], title: 'Moyenne' },
+        xaxis: { title: 'Étudiants' },
+        plot_bgcolor: '#ffffff',
+        paper_bgcolor: '#ffffff',
+        margin: { t: 10 }
+    });
+ 
+    Plotly.newPlot('chart_clusters', [{
+        type: 'pie',
+        labels: ['Excellent', 'Moyen', 'En difficulté', 'Non évalué'],
+        values: [{{ occurance_excellent }}, {{ occurance_moyen }}, {{ occurance_difficulte }}, {{ occurance_non_evalue }}],
+        marker: { colors: ['#3B6D11', '#BA7517', '#A32D2D', '#888888'] }
+    }], {
+        plot_bgcolor: '#ffffff',
+        paper_bgcolor: '#ffffff',
+        margin: { t: 10 }
+    });
+ 
+    Plotly.newPlot('chart_absences', [{
+        type: 'bar',
+        x: noms,
+        y: absences_par_etudiant,
+        marker: { color: '#E24B4A' }
+    }], {
+        yaxis: { title: 'Absences' },
+        xaxis: { title: 'Étudiants' },
+        plot_bgcolor: '#ffffff',
+        paper_bgcolor: '#ffffff',
+        margin: { t: 10 }
+    });
+ 
+
+    var semestres_data = {{ semestres_data | tojson }};
+    var semestres_traces = [];
+    for (var sem in semestres_data) {
+        semestres_traces.push({
+            type: 'box',
+            y: semestres_data[sem],
+            name: sem
+        });
+    }
+    Plotly.newPlot('chart_semestres', semestres_traces, {
+        yaxis: { range: [0, 20], title: 'Notes' },
+        plot_bgcolor: '#ffffff',
+        paper_bgcolor: '#ffffff',
+        margin: { t: 10 }
+    });
+</script>
+ 
+{% endblock %}

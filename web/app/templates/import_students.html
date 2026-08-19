@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Importer des étudiants{% endblock %}
+{% block page_title %}Importer des étudiants{% endblock %}
+{% block page_subtitle %}Import en masse via fichier CSV{% endblock %}
+
+{% block content %}
+
+<div class="form-card">
+    <p style="font-size: 13px; color: #888; margin-bottom: 1.5rem;">
+        Le fichier CSV doit contenir les colonnes : <strong>nom</strong>, <strong>prenom</strong>, <strong>groupe</strong>
+    </p>
+    <form action="{{ url_for('students.send_csv') }}" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Fichier CSV</label>
+            <input type="file" name="file" accept=".csv" required>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 1.5rem;">
+            <button type="submit" class="btn-primary">Importer</button>
+            <a href="{{ url_for('students.list_students') }}" class="btn-secondary">Annuler</a>
+        </div>
+    </form>
+</div>
+
+<div class="card" style="margin-top: 1.5rem; max-width: 500px;">
+    <div style="font-size: 13px; font-weight: 500; margin-bottom: 0.75rem;">Exemple de format CSV</div>
+    <pre style="font-size: 12px; color: #555; background: #f5f5f0; padding: 1rem; border-radius: 8px;">nom,prenom,groupe
+Benali,Youssef,Groupe A
+Chaoui,Sara,Groupe B
+Tahiri,Omar,Groupe A</pre>
+</div>
+
+{% endblock %}

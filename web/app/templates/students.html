@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Étudiants{% endblock %}
+{% block page_title %}Étudiants{% endblock %}
+{% block page_subtitle %}Liste de vos étudiants{% endblock %}
+
+{% block content %}
+
+<div style="display: flex; justify-content: flex-end; margin-bottom: 1.5rem;">
+    <a href="{{ url_for('students.add_student') }}" class="btn-primary">+ Ajouter un étudiant</a>
+    <a href="{{ url_for('students.send_csv') }}" class="btn-secondary">Importer CSV</a>
+</div>
+
+{% if students %}
+<div class="card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Groupe</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in students %}
+            <tr>
+                <td>{{ s.nom }}</td>
+                <td>{{ s.prenom }}</td>
+                <td><span class="badge">{{ s.groupe }}</span></td>
+                <td>
+                    <a href="{{ url_for('students.student_details', student_id=s.id) }}" class="action-link">Détails</a>
+                    <a href="{{ url_for('students.edit_student', student_id=s.id) }}" class="action-link">Modifier</a>
+                    
+                    <form action="{{ url_for('students.delete_student', student_id=s.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="action-delete" onclick="return confirm('Supprimer cet étudiant ?')">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="empty-msg">Aucun étudiant pour le moment. <a href="{{ url_for('students.add_student') }}">Ajouter un étudiant</a></p>
+{% endif %}
+
+{% endblock %}

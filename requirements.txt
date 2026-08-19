@@ -1,0 +1,28 @@
+# --- Web (Flask) ---
+flask
+flask-sqlalchemy
+flask-login
+flask-wtf
+werkzeug
+
+# --- Données ---
+pandas
+numpy
+openpyxl          
+
+# --- Visualisation ---
+plotly
+matplotlib
+jupyter
+seaborn
+# --- Machine Learning ---
+scikit-learn
+
+# --- Export PDF ---
+reportlab
+
+# --- Desktop ---
+PyQt6
+
+# --- Utilitaires ---
+python-dotenv     
